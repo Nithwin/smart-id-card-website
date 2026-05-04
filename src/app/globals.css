@@ -1,26 +1,413 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — editorial dual-theme system
+   ═══════════════════════════════════════════════════════════ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Warmer editorial paper — closer to award-winning portfolio sites */
+  --bg-base:       #ebe6dc;
+  --bg-raised:     #faf8f4;
+  --bg-subtle:     #e0d9cc;
+  --bg-invert:     #080808;
+
+  --border:        #1a1a1a16;
+  --border-strong: #1a1a1a38;
+
+  --text-primary:  #0a0a0a;
+  --text-body:     #2a2926;
+  --text-muted:    #6e6a63;
+
+  --accent:        #f0b73c;
+  --accent-2:      #e85d2c;
+  --accent-3:      #1d4ed8;
+
+  /* Text-highlight + selection — soft periwinkle (between light purple & blue) */
+  --mark:          #c8c4ff;
+  --mark-text:     #0a0a0a;
+}
+
+.dark {
+  --bg-base:       #080808;
+  --bg-raised:     #121212;
+  --bg-subtle:     #181818;
+  --bg-invert:     #f2efe8;
+
+  --border:        #ffffff12;
+  --border-strong: #ffffff30;
+
+  --text-primary:  #f2efe8;
+  --text-body:     #c4bfb6;
+  --text-muted:    #7d786f;
+
+  --accent:        #f5c969;
+  --accent-2:      #ff7a45;
+  --accent-3:      #7c9cff;
+
+  --mark:          #b6b1ff;
+  --mark-text:     #0a0a0a;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-base);
+  --color-foreground: var(--text-primary);
+  --color-accent:     var(--accent);
+  --font-sans:        var(--font-geist-sans);
+  --font-mono:        var(--font-geist-mono);
+  --font-display:     var(--font-instrument);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  transition: background-color 400ms ease, color 400ms ease;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Hide cursor only on devices that support hover (desktop) */
+@media (hover: hover) and (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor * { cursor: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPOGRAPHY UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+.font-display { font-family: var(--font-instrument), Georgia, serif; font-weight: 400; letter-spacing: -0.025em; }
+.font-mono    { font-family: var(--font-geist-mono), monospace; }
+
+.text-display-xl  { font-size: clamp(3.2rem, 14vw, 14rem);   line-height: 0.92; letter-spacing: -0.045em; font-weight: 500; }
+/* Hero only — tamer than display-xl so long headlines fit without clipping */
+.text-display-hero {
+  font-size: clamp(1.95rem, 5.4vw + 0.25rem, 5.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+}
+/* Hero-page main headline — larger, bolder, fills the left column */
+.hero-headline {
+  font-size: clamp(2.6rem, 5.8vw + 0.6rem, 7.2rem);
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+}
+.text-display-lg  { font-size: clamp(2.8rem, 9vw, 9rem);     line-height: 0.95; letter-spacing: -0.04em;  font-weight: 500; }
+.text-display-md  { font-size: clamp(2rem, 5.5vw, 5rem);     line-height: 1.0;  letter-spacing: -0.035em; font-weight: 500; }
+.text-eyebrow     { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════════════
+   TEXTURED SURFACES & UTILITIES
+   ═══════════════════════════════════════════════════════════ */
+.card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+}
+
+.card-subtle {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.invert-section {
+  background: var(--bg-invert);
+  color: var(--bg-base);
+}
+
+.dark .invert-section { color: var(--bg-base); }
+
+/* Grain noise texture overlay */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 1;
+  mix-blend-mode: multiply;
+}
+
+.dark .grain::after { mix-blend-mode: screen; opacity: .35; }
+
+/* ═══════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════ */
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.marquee-wrap {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.marquee-track {
+  animation: marquee-scroll var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; transform: none !important; }
+  .blob-float { animation: none; }
+  .hero-grid-pulse line { animation: none !important; }
+  .grain.grain-animated::after { animation: none; }
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(40px, -30px) scale(1.05); }
+  66%      { transform: translate(-30px, 30px) scale(0.95); }
+}
+
+.blob-float { animation: blob-float 18s ease-in-out infinite; }
+
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-2%, 1%); }
+}
+
+.grain.grain-animated::after {
+  animation: grain-shift 8s ease-in-out infinite;
+}
+
+@keyframes hero-grid-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 0.72; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-grid-pulse line {
+    animation: hero-grid-pulse 14s ease-in-out infinite;
+  }
+  .hero-grid-pulse line:nth-child(3n) { animation-delay: -2s; }
+  .hero-grid-pulse line:nth-child(3n + 1) { animation-delay: -4s; }
+}
+
+/* Char reveal mask */
+.char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CA-YOLO PIPELINE — always-dark "terminal" island
+   The stage visualisations use hardcoded slate/hex colours
+   designed for dark backgrounds, so we lock the shell dark
+   in BOTH themes rather than fighting 43 component files.
+   ═══════════════════════════════════════════════════════════ */
+
+/*
+ * Outer shell — forced dark regardless of site theme.
+ * We override the inherited CSS variables so any child that
+ * reads var(--text-primary), var(--border) etc. gets the
+ * dark-theme values inside this scope.
+ */
+.yolo-shell {
+  background:      #141414;
+  border:          1px solid rgba(255,255,255,0.10);
+  border-radius:   24px;
+
+  /* Dark-theme CSS variable overrides (cascade to all children) */
+  --bg-base:       #080808;
+  --bg-raised:     #1a1a1a;
+  --bg-subtle:     #222222;
+  --bg-invert:     #f2efe8;
+
+  --border:        rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.20);
+
+  --text-primary:  #f2efe8;
+  --text-body:     #c4bfb6;
+  --text-muted:    #7d786f;
+
+  --accent:        #f5c969;
+  --accent-2:      #ff7a45;
+  --accent-3:      #7c9cff;
+
+  --mark:          #b6b1ff;
+  --mark-text:     #0a0a0a;
+}
+
+/*
+ * Inner stage canvas — deep slate, always dark.
+ * Tailwind's slate-* classes already look right on this background.
+ */
+.yolo-canvas {
+  border-radius:    16px;
+  overflow:         hidden;
+  position:         relative;
+  background-image: radial-gradient(ellipse at center, #1e293b, #020617 70%);
+  border:           1px solid rgba(255,255,255,0.10);
+
+  /* Canvas token overrides (used by inner components) */
+  --canvas-bg:     #0f172a;
+  --canvas-mid:    #1e293b;
+  --canvas-edge:   #020617;
+  --canvas-border: rgba(255,255,255,0.10);
+}
+
+/*
+ * Controls / label area inside the shell but outside the canvas —
+ * needs legible text against the dark shell background.
+ */
+.yolo-shell .glass-panel {
+  background:      rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+  border-color:    rgba(255,255,255,0.12);
+  color:           #c4bfb6;
+}
+
+/* ScenarioToggle & TimelineBar pill buttons */
+.yolo-shell button {
+  --ring-color: rgba(255,255,255,0.15);
+}
+
+/*
+ * Explicit slate overrides — only needed now to ensure dark-mode
+ * site theme doesn't accidentally re-lighten things via :root reset.
+ * (In practice the forced dark shell variables above cover most cases.)
+ */
+.yolo-canvas .text-white     { color: #f8fafc; }
+.yolo-canvas .text-slate-300 { color: #cbd5e1; }
+.yolo-canvas .text-slate-400 { color: #94a3b8; }
+.yolo-canvas .text-slate-500 { color: #64748b; }
+.yolo-canvas .bg-slate-700   { background-color: #334155; }
+.yolo-canvas .bg-slate-800   { background-color: #1e293b; }
+.yolo-canvas .bg-slate-900   { background-color: #0f172a; }
+.yolo-canvas .bg-slate-950   { background-color: #020617; }
+.yolo-canvas .border-slate-600 { border-color: #475569; }
+.yolo-canvas .border-slate-700 { border-color: #334155; }
+.yolo-canvas .border-slate-800 { border-color: #1e293b; }
+.yolo-canvas .bg-black\/40   { background-color: rgba(0,0,0,0.40); }
+.yolo-canvas .bg-black\/30   { background-color: rgba(0,0,0,0.30); }
+.yolo-canvas .bg-black\/60   { background-color: rgba(0,0,0,0.60); }
+
+/* Glass-panel utility used by TimelineBar */
+.glass-panel {
+  background: color-mix(in srgb, var(--bg-raised) 90%, transparent);
+  backdrop-filter: blur(8px);
+}
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+/* Unified editorial treatment — all team portraits read as one set */
+.team-portrait-photo {
+  filter: grayscale(100%) contrast(1.14) brightness(0.96);
+}
+html.dark .team-portrait-photo {
+  filter: grayscale(100%) contrast(1.1) brightness(1.03);
+}
+/* Footer sits on inverted band; lift mids slightly so small avatars match hero portraits */
+.invert-section .team-portrait-photo {
+  filter: grayscale(100%) contrast(1.12) brightness(1.06);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar          { width: 8px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: var(--border-strong); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ═══════════════════════════════════════════════════════════
+   SELECTION
+   ═══════════════════════════════════════════════════════════ */
+::selection      { background: var(--mark); color: var(--mark-text); }
+::-moz-selection { background: var(--mark); color: var(--mark-text); }
+
+/* ═══════════════════════════════════════════════════════════
+   HOVER HIGHLIGHT — marker-pen sweep on any text
+   ═══════════════════════════════════════════════════════════ */
+
+/*
+ * Three selectors share the same marker-pen animation:
+ *  1. em / strong / b  anywhere in the document
+ *  2. .hover-mark      manual opt-in on any element
+ *  3. .word-hi         each word inside a <WordMark> component
+ */
+em,
+strong,
+b,
+.hover-mark,
+.word-hi {
+  display: inline;
+  background-image: linear-gradient(0deg, var(--mark) 0%, var(--mark) 100%);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 0%;
+  border-radius: 3px;
+  padding: 0 0.06em;
+  transition:
+    background-size 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    color           260ms cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+em:hover,
+strong:hover,
+b:hover,
+.hover-mark:hover,
+.word-hi:hover {
+  background-size: 100% 90%;
+  color: var(--mark-text);
+}
+
+/* Nav links — slim underline variant (doesn't obscure the small mono text) */
+nav a .nav-word,
+.nav-hi {
+  display: inline;
+  background-image: linear-gradient(0deg, var(--mark) 0%, var(--mark) 100%);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 0%;
+  border-radius: 2px;
+  padding: 0 0.04em;
+  transition:
+    background-size 340ms cubic-bezier(0.16, 1, 0.3, 1),
+    color           220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+nav a:hover .nav-word,
+.nav-hi:hover {
+  background-size: 100% 45%;
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  em, strong, b, .hover-mark, .word-hi, .nav-word, .nav-hi {
+    transition: none;
+  }
 }

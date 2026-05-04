@@ -1,65 +1,187 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+
+import { Navbar }         from "@/app/components/Navbar";
+import { Footer }         from "@/app/components/Footer";
+import { Loader }         from "@/app/components/ui/Loader";
+import { CustomCursor }   from "@/app/components/ui/CustomCursor";
+import { Marquee }        from "@/app/components/ui/Marquee";
+
+import { Hero }           from "@/app/components/sections/Hero";
+import { Manifesto }      from "@/app/components/sections/Manifesto";
+import { ProjectStory }   from "@/app/components/sections/ProjectStory";
+import { Overview }       from "@/app/components/sections/Overview";
+import { Modules }        from "@/app/components/sections/Modules";
+import { CaYoloPipeline } from "@/app/components/sections/CaYoloPipeline";
+import { Architecture }   from "@/app/components/sections/Architecture";
+import { Metrics }        from "@/app/components/sections/Metrics";
+import { TechStack }      from "@/app/components/sections/TechStack";
+import { Team }           from "@/app/components/sections/Team";
+import { Timeline }       from "@/app/components/sections/Timeline";
+import { DemoOutputs }    from "@/app/components/sections/DemoOutputs";
+import { FAQ }            from "@/app/components/sections/FAQ";
+import { CTA }            from "@/app/components/sections/CTA";
 
 export default function Home() {
+  const progressRef = useRef<HTMLDivElement | null>(null);
+
+  const [dark, setDark] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const stored = localStorage.getItem("theme");
+    if (stored) return stored === "dark";
+    return false;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
+  }, [dark]);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ── Lenis smooth scroll ───────────────────────────────────────
+     * Momentum-based scroll with spring ease. Synced with GSAP
+     * ScrollTrigger so the reading-progress bar and all scrub-based
+     * animations keep working without any extra plumbing.
+     * ─────────────────────────────────────────────────────────────── */
+    const lenis = new Lenis({
+      duration:   1.15,
+      easing:     (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    /* Lenis fires a real scroll event on window, so Framer Motion's
+     * useScroll hooks keep working. Only GSAP needs an explicit sync. */
+    lenis.on("scroll", ScrollTrigger.update);
+    gsap.ticker.add((time: number) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    if (progressRef.current) {
+      gsap.fromTo(
+        progressRef.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          transformOrigin: "left center",
+          scrollTrigger: {
+            trigger: document.body,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true,
+          },
+        },
+      );
+    }
+
+    return () => {
+      lenis.destroy();
+      gsap.ticker.remove((time: number) => lenis.raf(time * 1000));
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <Loader />
+      <CustomCursor />
+
+      <main className="relative" style={{ background: "var(--bg-base)", color: "var(--text-primary)" }}>
+        {/* Ambient background blobs */}
+        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+          <div className="blob-float absolute -top-32 left-1/2 h-[38rem] w-[38rem] -translate-x-1/2 rounded-full bg-indigo-400/10 blur-[100px] dark:bg-indigo-600/20" />
+          <div
+            className="blob-float absolute left-0 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-400/10 blur-[90px] dark:bg-cyan-500/15"
+            style={{ animationDelay: "-4s" }}
+          />
+          <div
+            className="blob-float absolute right-0 top-1/3 h-80 w-80 rounded-full bg-violet-400/10 blur-[90px] dark:bg-violet-600/15"
+            style={{ animationDelay: "-7s" }}
+          />
+          <div
+            className="grain grain-animated absolute inset-0 opacity-[0.22] dark:opacity-[0.18]"
+            aria-hidden
+          />
+        </div>
+
+        <Navbar dark={dark} onToggle={() => setDark((p) => !p)} progressRef={progressRef} />
+
+        <Hero />
+
+        {/* Marquee accent strip */}
+        <Marquee
+          italic
+          duration={45}
+          items={[
+            "CA-YOLOv8",
+            "No-ID detection",
+            "InsightFace identification",
+            "HOD / Principal alerts",
+            "No OCR — by design",
+            "Campus vision pipeline",
+          ]}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        <Manifesto />
+
+        <ProjectStory />
+
+        <Overview />
+
+        <Modules />
+
+        {/* Light loud strip before the live pipeline */}
+        <Marquee
+          duration={32}
+          invert
+          items={[
+            "▸ detection core",
+            "10 stages",
+            "With ID vs No ID",
+            "InsightFace after violation",
+            "auto-play",
+          ]}
+          separator="/"
+        />
+
+        <CaYoloPipeline />
+
+        <Architecture />
+
+        <Metrics />
+
+        <TechStack />
+
+        {/* Marquee strip framing the team section */}
+        <Marquee
+          duration={42}
+          italic
+          items={[
+            "Nithwin · model architect",
+            "Dharun Raj · backend engineer",
+            "Deepika · data &amp; research",
+            "the people behind the system",
+          ]}
+          separator="✦"
+        />
+
+        <Team />
+
+        <Timeline />
+
+        <DemoOutputs />
+
+        <FAQ />
+
+        <CTA />
+
+        <Footer />
       </main>
-    </div>
+    </>
   );
 }
