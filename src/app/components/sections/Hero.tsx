@@ -209,7 +209,7 @@ export function Hero() {
               students without a visible ID, captures the frame, runs{" "}
               <em className="font-display italic">InsightFace</em> against the enrolled gallery, and
               routes a clean incident packet to the{" "}
-              <em className="font-display italic">HOD or Principal</em>. No OCR, no guesswork.
+              <em className="font-display italic">HOD or Principal</em>.
             </motion.p>
 
             {/* CTAs */}

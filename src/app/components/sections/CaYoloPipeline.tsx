@@ -98,7 +98,7 @@ export function CaYoloPipeline() {
   };
 
   return (
-    <section id="ca-yolo" className="mx-auto max-w-[1600px] px-5 py-16 sm:px-8 sm:py-20">
+    <section id="ca-yolo" className="mx-auto max-w-[1600px] px-4 py-14 sm:px-8 sm:py-20">
       <SectionLabel number="03" label="CA-YOLO Pipeline" className="mb-8" />
 
       <div className="mb-8 grid gap-8 md:grid-cols-12">
@@ -107,11 +107,11 @@ export function CaYoloPipeline() {
           text="The CA-YOLOv8 deep pipeline."
           split="word"
           stagger={0.05}
-          className="md:col-span-7 text-display-md font-display italic leading-[1.05]"
+          className="md:col-span-7 text-[clamp(2rem,5.3vw,5rem)] font-display italic leading-[1.05]"
           style={{ color: "var(--text-primary)" }}
         />
         <ScrollReveal direction="lift" className="md:col-span-5 md:self-end">
-          <p className="text-base leading-relaxed" style={{ color: "var(--text-body)" }}>
+          <p className="max-w-xl text-[0.98rem] leading-relaxed sm:text-base" style={{ color: "var(--text-body)" }}>
             This block is the <em className="font-display italic">detection core</em> only — how CA-YOLO
             decides person + card boxes before any InsightFace or HOD / Principal step. Ten stages,
             inline visualisers, scrubbable timeline.
@@ -120,10 +120,10 @@ export function CaYoloPipeline() {
       </div>
 
       {/* Pipeline shell — theme-aware */}
-      <div className="yolo-shell flex flex-col items-center gap-3 p-3 sm:gap-4 sm:p-4 md:p-5">
+      <div className="yolo-shell award-surface flex flex-col items-center gap-3 rounded-3xl p-2.5 sm:gap-4 sm:p-4 md:p-5">
         {/* Controls row — only scenario toggle now */}
-        <div className="flex w-full flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+        <div className="flex w-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
+          <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start">
             <span
               className="font-mono text-[11px] uppercase tracking-[0.22em]"
               style={{ color: "var(--text-muted)" }}
@@ -133,7 +133,7 @@ export function CaYoloPipeline() {
             <ScenarioToggle scenario={scenario} onChange={handleScenarioChange} />
           </div>
           <div
-            className="hidden font-mono text-[11px] uppercase tracking-[0.22em] sm:block"
+            className="w-full text-right font-mono text-[11px] uppercase tracking-[0.22em] sm:w-auto"
             style={{ color: "var(--text-muted)" }}
           >
             stage {String(currentStage + 1).padStart(2, "0")} / {TOTAL_STAGES}
@@ -155,13 +155,13 @@ export function CaYoloPipeline() {
             stage {currentStage + 1} / {TOTAL_STAGES}
           </span>
           <h3
-            className="mt-1 text-2xl font-medium tracking-tight sm:text-3xl"
+            className="mt-1 text-center text-[1.35rem] font-medium tracking-tight sm:text-3xl"
             style={{ color: "var(--text-primary)" }}
           >
             {STAGE_TITLES[currentStage]}
           </h3>
           <p
-            className="mt-1 text-sm"
+            className="mt-1 max-w-[52ch] px-2 text-center text-[0.83rem] sm:text-sm"
             style={{ color: "var(--text-muted)" }}
           >
             {STAGE_BLURBS[currentStage]}
@@ -169,7 +169,7 @@ export function CaYoloPipeline() {
         </motion.div>
 
         {/* Main visualization panel — theme-aware canvas */}
-        <div className="yolo-canvas relative flex min-h-[min(60dvh,420px)] w-full flex-col sm:min-h-[460px] md:min-h-[500px]">
+        <div className="yolo-canvas relative flex min-h-[340px] w-full flex-col sm:min-h-[460px] md:min-h-[500px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStage}
@@ -177,7 +177,7 @@ export function CaYoloPipeline() {
               animate={{ opacity: 1, scale: 1, x: 0, filter: "blur(0px)" }}
               exit={{ opacity: 0, scale: 0.98, x: -28, filter: "blur(8px)" }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="flex w-full flex-1 items-center justify-center px-1 pb-2 sm:px-2"
+              className="flex w-full flex-1 items-center justify-center px-0.5 pb-1.5 sm:px-2 sm:pb-2"
             >
               {renderStage()}
             </motion.div>

@@ -49,7 +49,7 @@ export function Overview() {
               Corridors and gates are busy: staff cannot catch every student who walks past without an ID.
               Our pipeline watches one camera stream, detects each person and whether an ID card is visible,
               and when the rules say <em className="font-display italic">no ID</em>, it freezes evidence and
-              continues down the identification path — no card text is read; there is no OCR step.
+              continues down the identification path using face matching from the enrolled gallery.
             </p>
           </ScrollReveal>
           <ScrollReveal direction="lift" delay={0.2}>

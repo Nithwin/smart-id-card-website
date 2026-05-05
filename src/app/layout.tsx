@@ -22,7 +22,7 @@ const instrument = Instrument_Serif({
 export const metadata: Metadata = {
   title: "Smart ID Card Detection — Campus violations to HOD / Principal",
   description:
-    "A campus vision system: detect students without a visible ID card, capture the frame, identify them with InsightFace (no OCR), and route a clean incident to the HOD or Principal.",
+    "A campus vision system: detect students without a visible ID card, capture the frame, identify them with InsightFace, and route a clean incident to the HOD or Principal.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

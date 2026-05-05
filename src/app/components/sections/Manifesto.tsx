@@ -46,7 +46,7 @@ export function Manifesto() {
             We rebuilt YOLOv8 into <em className="font-display italic">CA-YOLOv8</em> so the camera reliably sees
             people and whether an ID card is actually on them — then we close the loop: violation → capture →{" "}
             <em className="font-display italic">InsightFace</em> → alert to <em className="font-display italic">HOD / Principal</em>.
-            There is no OCR on the card; identity comes from the face gallery. This is a working campus story,
+            Identity comes from the face gallery. This is a working campus story,
             not a slide-deck fantasy.
           </p>
 

@@ -91,7 +91,7 @@ export function Modules() {
             style={{ color: "var(--text-body)" }}
           >
             Every module exists for one campus story: spot a student without a visible ID, keep proof,
-            identify them with InsightFace, and push a clean packet to the HOD or Principal — without OCR.
+            identify them with InsightFace, and push a clean packet to the HOD or Principal.
           </p>
         </ScrollReveal>
       </div>

@@ -32,6 +32,22 @@ export function Navbar({ dark, onToggle, progressRef }: NavbarProps) {
   }, [menuOpen]);
 
   useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  useEffect(() => {
     const ids = navLinks.map((l) => l.href.replace("#", ""));
     const sections = ids
       .map((id) => document.getElementById(id))
@@ -65,10 +81,10 @@ export function Navbar({ dark, onToggle, progressRef }: NavbarProps) {
 
       <nav
         className={`pointer-events-auto mx-auto flex max-w-[1600px] items-center justify-between gap-2 rounded-full px-4 py-2.5 transition-all duration-500 sm:px-7 sm:py-3 ${
-          scrolled ? "backdrop-blur-md" : ""
+          scrolled || menuOpen ? "backdrop-blur-xl shadow-[0_18px_45px_-24px_rgba(0,0,0,0.45)]" : ""
         }`}
         style={{
-          background: scrolled
+          background: scrolled || menuOpen
             ? "color-mix(in srgb, var(--bg-raised) 80%, transparent)"
             : "transparent",
           borderWidth: 1,
@@ -150,7 +166,7 @@ export function Navbar({ dark, onToggle, progressRef }: NavbarProps) {
             <motion.button
               type="button"
               aria-label="Close menu overlay"
-              className="pointer-events-auto fixed inset-0 z-[55] bg-black/40 backdrop-blur-sm md:hidden"
+              className="pointer-events-auto fixed inset-0 z-[55] bg-black/45 backdrop-blur-md md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -159,34 +175,52 @@ export function Navbar({ dark, onToggle, progressRef }: NavbarProps) {
             <motion.div
               role="dialog"
               aria-modal="true"
-              className="pointer-events-auto fixed inset-x-0 bottom-0 top-[4.5rem] z-[60] mx-3 flex max-h-[min(78dvh,560px)] flex-col overflow-hidden rounded-3xl border md:hidden"
+              className="pointer-events-auto fixed inset-x-0 bottom-0 top-[4.5rem] z-[60] mx-3 flex max-h-[min(82dvh,640px)] flex-col overflow-hidden rounded-3xl border md:hidden"
               style={{
-                background: "var(--bg-raised)",
+                background: "color-mix(in srgb, var(--bg-raised) 92%, transparent)",
                 borderColor: "var(--border)",
               }}
-              initial={{ opacity: 0, y: -12, scale: 0.98 }}
+              initial={{ opacity: 0, y: -14, scale: 0.985 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.98 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: -14, scale: 0.985 }}
+              transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
             >
-              <nav className="flex flex-col gap-0 overflow-y-auto p-2">
+              <div className="flex items-center justify-between border-b px-4 py-3" style={{ borderColor: "var(--border)" }}>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>
+                  Navigation
+                </span>
+                <button
+                  type="button"
+                  onClick={onToggle}
+                  aria-label="Toggle theme"
+                  className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em]"
+                  style={{ background: "var(--bg-subtle)", color: "var(--text-primary)" }}
+                >
+                  {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+                  theme
+                </button>
+              </div>
+              <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2.5 pb-4">
                 {navLinks.map((l, i) => {
                   const id       = l.href.replace("#", "");
                   const isActive = activeId === id;
                   return (
-                    <a
+                    <motion.a
                       key={l.href}
                       href={l.href}
                       onClick={() => setMenuOpen(false)}
                       className="rounded-2xl px-4 py-3.5 font-mono text-sm uppercase tracking-[0.16em] transition-colors"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.28, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
                       style={{
-                        background: isActive ? "var(--bg-subtle)" : "transparent",
+                        background: isActive ? "color-mix(in srgb, var(--bg-subtle) 84%, var(--accent) 16%)" : "transparent",
                         color:      isActive ? "var(--text-primary)" : "var(--text-body)",
                       }}
                     >
                       <span className="mr-2 opacity-45">0{i + 1}</span>
                       {l.label}
-                    </a>
+                    </motion.a>
                   );
                 })}
               </nav>

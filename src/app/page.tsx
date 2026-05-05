@@ -29,12 +29,7 @@ import { CTA }            from "@/app/components/sections/CTA";
 export default function Home() {
   const progressRef = useRef<HTMLDivElement | null>(null);
 
-  const [dark, setDark] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
-    const stored = localStorage.getItem("theme");
-    if (stored) return stored === "dark";
-    return false;
-  });
+  const [dark, setDark] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -122,7 +117,7 @@ export default function Home() {
             "No-ID detection",
             "InsightFace identification",
             "HOD / Principal alerts",
-            "No OCR — by design",
+            "Face-based identification",
             "Campus vision pipeline",
           ]}
         />

@@ -38,7 +38,7 @@ export const storyPanels: StoryPanel[] = [
     id:     "01",
     kicker: "Problem",
     title:  "Busy corridors. Missed ID cards.",
-    body:   "Every college expects students to wear their ID — and nobody can watch every gate, lift lobby, or canteen line in real time. Students without a visible card slip past, and incidents only surface days later when someone notices a pattern.",
+    body:   "Every college expects students to wear an ID, but no one can watch every gate, corridor, and canteen line all day. So when a card is missing, it is often noticed late.",
     glyph:  "campus",
     tone:   "var(--accent-3)",
   },
@@ -46,7 +46,7 @@ export const storyPanels: StoryPanel[] = [
     id:     "02",
     kicker: "Detection",
     title:  "One model, two questions per frame.",
-    body:   "Built on YOLOv8: in a single forward pass, we ask “is there a person?” and “is there an ID card on them?” That live, lightweight detector is the stable base we extend — every upgrade plugs into it without breaking real-time speed.",
+    body:   "Built on YOLOv8, each frame answers two simple questions: is there a person, and is an ID card visible on them? That gives us a fast baseline we can improve without losing real-time performance.",
     glyph:  "yolo",
     tone:   "var(--text-primary)",
   },
@@ -54,7 +54,7 @@ export const storyPanels: StoryPanel[] = [
     id:     "03",
     kicker: "CA-YOLOv8",
     title:  "We taught it to look closer.",
-    body:   "CBAM after every C2f block focuses the network on what matters. Coordinate Attention in the neck keeps spatial structure for person-vs-card alignment. A custom P2 head catches small cards on lanyards. Wise-IoU steadies training on noisy real-world boxes.",
+    body:   "We added CBAM and Coordinate Attention so the model focuses better on people and small card regions. A custom P2 head helps catch tiny cards on lanyards, and Wise-IoU keeps training stable on noisy real scenes.",
     glyph:  "attention",
     tone:   "var(--accent-2)",
   },
@@ -62,7 +62,7 @@ export const storyPanels: StoryPanel[] = [
     id:     "04",
     kicker: "InsightFace",
     title:  "Who is in the frame?",
-    body:   "No OCR. When the rules say “no ID visible,” we freeze the frame, crop the face, and ask InsightFace (ArcFace embeddings, buffalo_l) to match against an enrolled student gallery. We escalate with a name only when the cosine similarity actually clears the threshold.",
+    body:   "If the system decides no ID is visible, it captures the frame, crops the face, and runs InsightFace against an enrolled gallery. A name is attached only when the match confidence is strong enough.",
     glyph:  "face",
     tone:   "var(--accent)",
   },
@@ -70,7 +70,7 @@ export const storyPanels: StoryPanel[] = [
     id:     "05",
     kicker: "Delivery",
     title:  "A clean packet to the right desk.",
-    body:   "FastAPI ties it together: live stream, detection, alert dedup, face registration, and SQLite. When something matters, the system sends the HOD or Principal a tight bundle — timestamp, snapshot, match score, student record — instead of a flood of raw frames.",
+    body:   "FastAPI connects the full flow: streaming, detection, identity lookup, and incident logging. Instead of spamming raw frames, staff receive one clear incident with time, snapshot, match score, and student details.",
     glyph:  "alert",
     tone:   "var(--text-primary)",
   },
@@ -86,10 +86,10 @@ export const heroStats: [string, string][] = [
 
 /* ─── Overview quick facts ──────────────────────────────── */
 export const overviewFacts: [string, string][] = [
-  ["Problem",    "Students without visible ID slip past busy corridors"],
-  ["Approach",   "CA-YOLO detects person + card → violation → InsightFace → staff alert"],
-  ["Dataset",    "Campus-style footage annotated for person, card, and no-card cases"],
-  ["Deployment", "FastAPI + dashboard; incidents to HOD / Principal with evidence"],
+  ["Problem",    "In busy campus spaces, missing IDs are easy to miss manually"],
+  ["Approach",   "Detect person + card, flag no-ID cases, identify face, notify staff"],
+  ["Dataset",    "Campus-like video data labeled for person, card, and no-card cases"],
+  ["Deployment", "FastAPI backend + web dashboard with evidence-first incident alerts"],
 ];
 
 /* ─── Project modules ───────────────────────────────────── */
@@ -105,7 +105,7 @@ export interface ProjectModule {
 export const projectModules: ProjectModule[] = [
   {
     title: "Live stream ingest",
-    description: "CCTV or classroom feed ingested frame-by-frame — resize, normalise, and hand off to the detector.",
+    description: "Reads CCTV or classroom video frame by frame, prepares each frame, then sends it to detection.",
     icon: Video,
     color: "text-sky-600 dark:text-sky-400",
     bg:    "bg-sky-50 dark:bg-sky-900/25",
@@ -113,7 +113,7 @@ export const projectModules: ProjectModule[] = [
   },
   {
     title: "CA-YOLO detection",
-    description: "One forward pass finds every person and every visible ID card — CBAM, Coordinate Attention, and a P2 head for small cards.",
+    description: "In one pass, the model finds people and visible ID cards, including small cards with our P2 head upgrade.",
     icon: Eye,
     color: "text-indigo-600 dark:text-indigo-400",
     bg:    "bg-indigo-50 dark:bg-indigo-900/25",
@@ -121,7 +121,7 @@ export const projectModules: ProjectModule[] = [
   },
   {
     title: "No-ID violation rules",
-    description: "Spatial rules decide “ID not worn”: e.g. no card box on the person, or card outside the expected torso band — no OCR involved.",
+    description: "Simple geometry rules decide if the ID is not visible (for example, no card on the person region).",
     icon: Crosshair,
     color: "text-violet-600 dark:text-violet-400",
     bg:    "bg-violet-50 dark:bg-violet-900/25",
@@ -129,7 +129,7 @@ export const projectModules: ProjectModule[] = [
   },
   {
     title: "Evidence capture",
-    description: "On violation, the pipeline saves a high-quality snapshot with timestamp and bbox metadata for audit.",
+    description: "When a violation is found, the system stores a clear snapshot with timestamp and bounding-box metadata.",
     icon: Aperture,
     color: "text-amber-600 dark:text-amber-400",
     bg:    "bg-amber-50 dark:bg-amber-900/25",
@@ -137,7 +137,7 @@ export const projectModules: ProjectModule[] = [
   },
   {
     title: "InsightFace identification",
-    description: "ArcFace embeddings from InsightFace match the face in the frame to an enrolled student gallery — who is this?",
+    description: "InsightFace converts the face to embeddings and matches it against enrolled students to answer who is in frame.",
     icon: ScanFace,
     color: "text-emerald-600 dark:text-emerald-400",
     bg:    "bg-emerald-50 dark:bg-emerald-900/25",
@@ -145,7 +145,7 @@ export const projectModules: ProjectModule[] = [
   },
   {
     title: "HOD / Principal alert",
-    description: "Structured notification with student details, match confidence, snapshot link, and time — routed to HOD or Principal.",
+    description: "Sends a structured alert with student details, confidence score, timestamp, and snapshot to HOD or Principal.",
     icon: Send,
     color: "text-rose-600 dark:text-rose-400",
     bg:    "bg-rose-50 dark:bg-rose-900/25",
@@ -153,7 +153,7 @@ export const projectModules: ProjectModule[] = [
   },
   {
     title: "Dedup & audit log",
-    description: "Cooldown windows and SQLite logging so staff get one clear incident per student, not spam.",
+    description: "Uses cooldown windows and SQLite logs so staff get clean incidents, not repeated spam alerts.",
     icon: ShieldCheck,
     color: "text-cyan-600 dark:text-cyan-400",
     bg:    "bg-cyan-50 dark:bg-cyan-900/25",
@@ -161,7 +161,7 @@ export const projectModules: ProjectModule[] = [
   },
   {
     title: "Operations dashboard",
-    description: "Live view, violation history, and export-friendly summaries for administrators.",
+    description: "Provides live view, incident history, and export-friendly summaries for administrators.",
     icon: LineChart,
     color: "text-purple-600 dark:text-purple-400",
     bg:    "bg-purple-50 dark:bg-purple-900/25",
@@ -259,7 +259,7 @@ export const trainingCurve = [60, 75, 85, 92, 95, 96.2, 97.1, 97.8, 98.6];
 /* ─── Tech stack ────────────────────────────────────────── */
 export const techStack = [
   { name: "Python + PyTorch",        icon: "⚙️", desc: "Train CA-YOLO & run inference" },
-  { name: "YOLOv8 + Custom Modules", icon: "🔬", desc: "CBAM, CoordAttn, P2 head — no OCR" },
+  { name: "YOLOv8 + Custom Modules", icon: "🔬", desc: "CBAM, CoordAttn, P2 head for small-card reliability" },
   { name: "OpenCV",                  icon: "👁️", desc: "Video I/O, crops, and frame prep only" },
   { name: "InsightFace",             icon: "🧠", desc: "ArcFace embeddings — who is the student?" },
   { name: "Next.js + Tailwind CSS",  icon: "🌐", desc: "Admin dashboard & this showcase site" },
@@ -319,7 +319,7 @@ export const team: TeamMember[] = [
     shortRole: "Backend Engineer",
     contributions: [
       "Built FastAPI backend with 17 REST endpoints — detection, video, camera, alerts, statistics, face registration",
-      "Implemented no-ID violation rules (spatial checks on person vs card boxes — no OCR)",
+      "Implemented no-ID violation rules (spatial checks on person vs card boxes)",
       "Integrated InsightFace (buffalo_l) for gallery match after violation capture; cosine threshold 0.4",
       "Staff escalation payloads — student identity, confidence, snapshot, timestamp for HOD / Principal",
       "Wrote MJPEG camera streaming with every-third-frame inference for live performance",
@@ -364,14 +364,14 @@ export const team: TeamMember[] = [
 export const faqs = [
   {
     q: "Why CA-YOLO over standard YOLOv8?",
-    a: "ID cards are small in the frame. CBAM, Coordinate Attention, and our P2 stride-4 head improve person + card detection on real CCTV so “no ID” violations are trustworthy before we ever call InsightFace.",
+    a: "Because ID cards are small and easy to miss in CCTV. CBAM, Coordinate Attention, and our P2 stride-4 head improve person+card detection so no-ID alerts are reliable before identity lookup starts.",
   },
   {
     q: "Do you read text off the ID card?",
-    a: "No. We do not use OCR. The card is detected as an object; rules use geometry (person vs card boxes). InsightFace identifies the student from their face against an enrolled gallery — not from card text.",
+    a: "No. The system only checks card visibility as an object and then identifies the student from face embeddings against the enrolled gallery.",
   },
   {
     q: "What gets sent to the HOD or Principal?",
-    a: "A structured incident: timestamp, violation snapshot, CA-YOLO confidences, InsightFace match score and matched student record, plus deduplication metadata so staff are not flooded with repeats.",
+    a: "A single incident packet: timestamp, violation snapshot, detection confidence, InsightFace match score, matched student record, and dedup metadata to prevent repeated alerts.",
   },
 ];
