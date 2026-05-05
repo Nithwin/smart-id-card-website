@@ -66,6 +66,12 @@ export function CTA() {
           >
             Back to top
           </MagneticButton>
+          <MagneticButton
+            href="/methodology-results"
+            style={{ background: "transparent", color: "#0a0a0a", border: "1px solid #0a0a0a33" }}
+          >
+            Methodology & results
+          </MagneticButton>
         </div>
       </div>
     </section>

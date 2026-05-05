@@ -3,6 +3,9 @@
 import React from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { FaPython } from "react-icons/fa";
+import { SiPytorch, SiOpencv, SiFastapi, SiNextdotjs, SiTailwindcss } from "react-icons/si";
+import { MdOutlineTrackChanges } from "react-icons/md";
 
 import { SectionLabel } from "@/app/components/ui/SectionLabel";
 import { RevealText }   from "@/app/components/ui/RevealText";
@@ -10,6 +13,35 @@ import { ScrollReveal } from "@/app/components/ui/ScrollReveal";
 import { WordMark }     from "@/app/components/ui/WordMark";
 import { TiltCard }     from "@/app/components/ui/TiltCard";
 import { techStack }    from "@/app/data";
+
+function renderStackIcon(name: string) {
+  switch (name) {
+    case "Python + PyTorch":
+      return (
+        <div className="flex items-center gap-1.5">
+          <FaPython size={18} color="#3776AB" />
+          <SiPytorch size={16} color="#EE4C2C" />
+        </div>
+      );
+    case "YOLOv8 + Custom Modules":
+      return <MdOutlineTrackChanges size={22} color="#7c9cff" />;
+    case "OpenCV":
+      return <SiOpencv size={20} color="#5C3EE8" />;
+    case "InsightFace":
+      return <SiPytorch size={20} color="#EE4C2C" />;
+    case "Next.js + Tailwind CSS":
+      return (
+        <div className="flex items-center gap-1.5">
+          <SiNextdotjs size={16} color="#111827" />
+          <SiTailwindcss size={18} color="#06B6D4" />
+        </div>
+      );
+    case "FastAPI + SQLite":
+      return <SiFastapi size={20} color="#009688" />;
+    default:
+      return null;
+  }
+}
 
 export function TechStack() {
   const ref    = useRef<HTMLDivElement | null>(null);
@@ -23,7 +55,7 @@ export function TechStack() {
         <div className="md:col-span-7">
           <RevealText
             as="h2"
-            text="A lean, hybrid stack."
+            text="A lean, hybrid stack with real tooling."
             split="word"
             stagger={0.06}
             className="text-display-md font-display italic leading-[1.05]"
@@ -32,8 +64,8 @@ export function TechStack() {
         </div>
         <ScrollReveal direction="lift" className="md:col-span-5 md:self-end">
           <p className="text-base leading-relaxed" style={{ color: "var(--text-body)" }}>
-            The detector lives in Python. The dashboard lives in the browser. A FastAPI WebSocket
-            stitches them in real-time — every layer chosen for speed and explainability.
+            The detector runs in Python, the experience runs in the browser, and FastAPI connects
+            everything in real-time. Each layer is selected for speed, clarity, and deployment practicality.
           </p>
         </ScrollReveal>
       </div>
@@ -66,7 +98,14 @@ export function TechStack() {
                   background: "radial-gradient(280px circle at 50% 0%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%)",
                 }}
               />
-              <span className="relative text-3xl transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1">{t.icon}</span>
+              <div
+                className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border"
+                style={{ borderColor: "var(--border)", background: "var(--bg-subtle)" }}
+              >
+                <span className="transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-0.5">
+                  {renderStackIcon(t.name)}
+                </span>
+              </div>
               <div className="relative">
                 <h3 className="text-lg font-medium" style={{ color: "var(--text-primary)" }}>
                   <WordMark text={t.name} />
@@ -78,7 +117,7 @@ export function TechStack() {
                   className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                   style={{ color: "var(--text-primary)" }}
                 >
-                  ▸ live in production
+                  ▸ used in this project
                 </div>
               </div>
             </TiltCard>

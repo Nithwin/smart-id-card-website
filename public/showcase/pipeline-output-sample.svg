@@ -1,0 +1,24 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="720" fill="#0B0E13"/>
+  <rect x="90" y="80" width="820" height="560" rx="16" fill="#111827" stroke="#334155"/>
+  <rect x="970" y="80" width="220" height="560" rx="16" fill="#131925" stroke="#334155"/>
+  <circle cx="430" cy="290" r="52" stroke="#E2E8F0" stroke-width="3"/>
+  <path d="M350 520C372 430 488 430 510 520" stroke="#E2E8F0" stroke-width="3"/>
+  <rect x="398" y="353" width="42" height="30" rx="4" fill="#F59E0B" fill-opacity="0.75" stroke="#FCD34D"/>
+  <rect x="320" y="220" width="250" height="330" rx="8" stroke="#F59E0B" stroke-width="3"/>
+  <text x="322" y="205" fill="#F59E0B" font-size="18" font-family="monospace">person 0.99</text>
+  <rect x="392" y="348" width="56" height="40" rx="8" stroke="#FB923C" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="392" y="340" fill="#FB923C" font-size="14" font-family="monospace">id 0.92</text>
+  <rect x="994" y="108" width="172" height="42" rx="8" fill="#1E293B"/>
+  <text x="1008" y="133" fill="#E2E8F0" font-size="14" font-family="monospace">incident_id: 2026-041</text>
+  <rect x="994" y="164" width="172" height="42" rx="8" fill="#1E293B"/>
+  <text x="1008" y="189" fill="#E2E8F0" font-size="14" font-family="monospace">verdict: no-id</text>
+  <rect x="994" y="220" width="172" height="42" rx="8" fill="#1E293B"/>
+  <text x="1008" y="245" fill="#E2E8F0" font-size="14" font-family="monospace">face_score: 0.83</text>
+  <rect x="994" y="276" width="172" height="42" rx="8" fill="#1E293B"/>
+  <text x="1008" y="301" fill="#E2E8F0" font-size="14" font-family="monospace">routed_to: HOD</text>
+  <rect x="994" y="332" width="172" height="42" rx="8" fill="#1E293B"/>
+  <text x="1008" y="357" fill="#E2E8F0" font-size="14" font-family="monospace">status: sent</text>
+  <rect x="994" y="405" width="172" height="52" rx="10" fill="#14532D"/>
+  <text x="1020" y="437" fill="#DCFCE7" font-size="18" font-family="monospace">ALERT SENT</text>
+</svg>

@@ -11,9 +11,11 @@ import { CustomCursor }   from "@/app/components/ui/CustomCursor";
 import { Marquee }        from "@/app/components/ui/Marquee";
 
 import { Hero }           from "@/app/components/sections/Hero";
+import { QuickFlow }      from "@/app/components/sections/QuickFlow";
 import { Manifesto }      from "@/app/components/sections/Manifesto";
 import { ProjectStory }   from "@/app/components/sections/ProjectStory";
 import { Overview }       from "@/app/components/sections/Overview";
+import { DatasetSection } from "@/app/components/sections/DatasetSection";
 import { Modules }        from "@/app/components/sections/Modules";
 import { CaYoloPipeline } from "@/app/components/sections/CaYoloPipeline";
 import { Architecture }   from "@/app/components/sections/Architecture";
@@ -24,6 +26,7 @@ import { Team }           from "@/app/components/sections/Team";
 import { Timeline }       from "@/app/components/sections/Timeline";
 import { DemoOutputs }    from "@/app/components/sections/DemoOutputs";
 import { FAQ }            from "@/app/components/sections/FAQ";
+import { LimitationsFuture } from "@/app/components/sections/LimitationsFuture";
 import { CTA }            from "@/app/components/sections/CTA";
 
 export default function Home() {
@@ -93,6 +96,7 @@ export default function Home() {
         <Navbar dark={dark} onToggle={() => setDark((p) => !p)} progressRef={progressRef} />
 
         <Hero />
+        <QuickFlow />
 
         {/* Marquee accent strip */}
         <Marquee
@@ -113,6 +117,7 @@ export default function Home() {
         <ProjectStory />
 
         <Overview />
+        <DatasetSection />
 
         <Modules />
 
@@ -160,6 +165,7 @@ export default function Home() {
         <DemoOutputs />
 
         <FAQ />
+        <LimitationsFuture />
 
         <CTA />
 

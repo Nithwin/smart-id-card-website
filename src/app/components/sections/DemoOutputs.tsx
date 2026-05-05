@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Camera, Crosshair, ShieldCheck } from "lucide-react";
@@ -101,6 +102,41 @@ export function DemoOutputs() {
             />
           </motion.article>
         ))}
+      </div>
+
+      <div
+        className="award-surface mt-8 rounded-3xl p-4 sm:p-6"
+        style={{ border: "1px solid var(--border)" }}
+      >
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em]" style={{ color: "var(--text-muted)" }}>
+          ▸ Real pipeline output sample
+        </p>
+        <div className="mt-4 grid gap-4 lg:grid-cols-12">
+          <div className="overflow-hidden rounded-2xl border lg:col-span-8" style={{ borderColor: "var(--border)" }}>
+            <Image
+              src="/showcase/pipeline-output-sample.svg"
+              alt="Annotated pipeline output with incident packet preview"
+              width={1280}
+              height={720}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div
+            className="rounded-2xl border p-4 lg:col-span-4"
+            style={{ borderColor: "var(--border)", background: "var(--bg-subtle)" }}
+          >
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: "var(--text-muted)" }}>
+              packet fields
+            </p>
+            <ul className="mt-3 space-y-2 text-sm leading-relaxed" style={{ color: "var(--text-body)" }}>
+              <li>incident id + timestamp</li>
+              <li>person/card detections + confidence</li>
+              <li>no-id verdict from rules</li>
+              <li>face match score (InsightFace)</li>
+              <li>routing target (HOD/Principal)</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );

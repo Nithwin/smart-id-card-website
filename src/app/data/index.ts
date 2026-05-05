@@ -13,7 +13,9 @@ import type { LucideIcon } from "lucide-react";
 /* ─── Nav ───────────────────────────────────────────────── */
 export const navLinks = [
   { label: "Home",         href: "#home" },
+  { label: "Flow",         href: "#quick-flow" },
   { label: "Overview",     href: "#overview" },
+  { label: "Dataset",      href: "#dataset" },
   { label: "Modules",      href: "#modules" },
   { label: "CA-YOLO",      href: "#ca-yolo" },
   { label: "Metrics",      href: "#metrics" },
@@ -92,6 +94,42 @@ export const overviewFacts: [string, string][] = [
   ["Dataset",    "Campus-like video data labeled for person, card, and no-card cases"],
   ["Deployment", "FastAPI backend + web dashboard with evidence-first incident alerts"],
 ];
+
+export const datasetPipeline = [
+  {
+    step: "01",
+    title: "Real campus capture",
+    desc: "Collected real-time student corridor frames from campus-like camera viewpoints.",
+  },
+  {
+    step: "02",
+    title: "Manual annotation",
+    desc: "Used Roboflow for manual box labeling (person and ID-card) across varied scenes.",
+  },
+  {
+    step: "03",
+    title: "Label QA pass",
+    desc: "Manually reviewed class IDs, box placements, and edge cases before training.",
+  },
+  {
+    step: "04",
+    title: "Custom export",
+    desc: "Exported in YOLO format and built train/val/test splits for controlled experiments.",
+  },
+];
+
+export const datasetSummary = [
+  { label: "Source", value: "Real-time student images + corridor footage" },
+  { label: "Annotation", value: "Manual bounding boxes in Roboflow" },
+  { label: "Classes", value: "2 classes: person, ID-card" },
+  { label: "Format", value: "YOLO normalized labels (cx, cy, w, h)" },
+];
+
+export const datasetAccess = {
+  isPublic: false,
+  publicUrl: "",
+  note: "Dataset is maintained privately due to student privacy. Access can be shared for academic review on request.",
+};
 
 /* ─── Project modules ───────────────────────────────────── */
 export interface ProjectModule {
@@ -259,12 +297,44 @@ export const trainingCurve = [60, 75, 85, 92, 95, 96.2, 97.1, 97.8, 98.6];
 
 /* ─── Tech stack ────────────────────────────────────────── */
 export const techStack = [
-  { name: "Python + PyTorch",        icon: "⚙️", desc: "Train CA-YOLO & run inference" },
-  { name: "YOLOv8 + Custom Modules", icon: "🔬", desc: "CBAM, CoordAttn, P2 head for small-card reliability" },
-  { name: "OpenCV",                  icon: "👁️", desc: "Video I/O, crops, and frame prep only" },
-  { name: "InsightFace",             icon: "🧠", desc: "ArcFace embeddings — who is the student?" },
-  { name: "Next.js + Tailwind CSS",  icon: "🌐", desc: "Admin dashboard & this showcase site" },
-  { name: "FastAPI + SQLite",        icon: "⚡", desc: "Alerts, streams, incidents, staff routing" },
+  {
+    name: "Python + PyTorch",
+    icon: "⚙️",
+    desc: "Model training, data handling, and inference runtime.",
+  },
+  {
+    name: "YOLOv8 + Custom Modules",
+    icon: "🔬",
+    desc: "Core detector with CBAM, Coordinate Attention, and P2 micro-head upgrades.",
+  },
+  {
+    name: "OpenCV",
+    icon: "👁️",
+    desc: "Video stream IO, frame operations, and crop preparation.",
+  },
+  {
+    name: "InsightFace",
+    icon: "🧠",
+    desc: "Face embedding and identity matching against enrolled gallery.",
+  },
+  {
+    name: "Next.js + Tailwind CSS",
+    icon: "🌐",
+    desc: "Frontend experience, storytelling UI, and dashboard views.",
+  },
+  {
+    name: "FastAPI + SQLite",
+    icon: "⚡",
+    desc: "API orchestration, incidents, alerts, and persistence.",
+  },
+];
+
+export const quickFlow = [
+  { step: "01", title: "Capture", detail: "Read live camera frames from corridor feed." },
+  { step: "02", title: "Detect", detail: "CA-YOLO finds person and visible card boxes." },
+  { step: "03", title: "Check", detail: "Rule engine decides ID visible vs no-ID case." },
+  { step: "04", title: "Identify", detail: "InsightFace matches face to enrolled gallery." },
+  { step: "05", title: "Escalate", detail: "Send one clean incident packet to staff." },
 ];
 
 /* ─── Timeline ──────────────────────────────────────────── */
@@ -294,7 +364,7 @@ export const team: TeamMember[] = [
     name:      "Nithwin",
     initials:  "NI",
     photo:     "/team/Nithwin.jpeg",
-    role:      "AI / ML Core & Architecture Lead",
+    role:      "AI / ML Core, Architecture & Frontend Lead",
     shortRole: "Model Architect",
     contributions: [
       "Architected the CA-YOLOv8 model — custom YOLOv8 enhanced with CBAM and Coordinate Attention",
@@ -450,6 +520,48 @@ export const detectionBenchmarks: DetectionBenchmarkRow[] = [
     deploymentFit: 90,
     notes: "CBAM + Coordinate Attention + P2 head + Wise-IoU improve tiny-card reliability.",
     status: "final",
+    highlight: true,
+  },
+];
+
+export const primaryComparison = [
+  {
+    model: "YOLOv8m baseline",
+    map50: "97.3%",
+    map5095: "84.1%",
+    latency: "10.8 ms",
+    tinyRecall: "88.2%",
+    note: "Strong baseline but weaker tiny-card recall in crowded scenes.",
+  },
+  {
+    model: "CA-YOLOv8m (ours)",
+    map50: "98.6%",
+    map5095: "85.0%",
+    latency: "11.2 ms",
+    tinyRecall: "93.7%",
+    note: "Better card reliability from CBAM + CoordAttn + P2 head.",
+    highlight: true,
+  },
+];
+
+export const faceModelChoice = [
+  {
+    model: "OpenCV LBPH",
+    strength: "Very light",
+    weakness: "Lower unconstrained accuracy",
+    decision: "Not selected",
+  },
+  {
+    model: "FaceNet",
+    strength: "Solid embeddings",
+    weakness: "More tuning needed for this setup",
+    decision: "Backup option",
+  },
+  {
+    model: "InsightFace (buffalo_l)",
+    strength: "Best quality-speed tradeoff",
+    weakness: "Needs proper gallery enrollment",
+    decision: "Selected",
     highlight: true,
   },
 ];
