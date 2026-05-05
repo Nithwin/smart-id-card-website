@@ -1,0 +1,17 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#0A0A0A"/>
+  <rect x="120" y="120" width="960" height="560" rx="18" fill="#111111" stroke="#2B2B2B"/>
+  <rect x="210" y="210" width="780" height="380" rx="14" fill="#171717" stroke="#323232"/>
+  <rect x="250" y="250" width="250" height="300" rx="10" fill="#0F172A" stroke="#374151"/>
+  <circle cx="375" cy="335" r="58" stroke="#D1D5DB" stroke-width="2"/>
+  <path d="M290 525C312 438 438 438 460 525" stroke="#D1D5DB" stroke-width="2"/>
+  <rect x="353" y="390" width="44" height="30" rx="5" fill="#FB7185"/>
+  <rect x="540" y="250" width="410" height="70" rx="9" fill="#1F2937"/>
+  <rect x="540" y="340" width="410" height="70" rx="9" fill="#1F2937"/>
+  <rect x="540" y="430" width="410" height="70" rx="9" fill="#1F2937"/>
+  <text x="560" y="294" fill="#E5E7EB" font-family="monospace" font-size="18">student_name: "XXXXX"</text>
+  <text x="560" y="384" fill="#E5E7EB" font-family="monospace" font-size="18">insightface_score: 0.83</text>
+  <text x="560" y="474" fill="#E5E7EB" font-family="monospace" font-size="18">routed_to: "HOD"</text>
+  <circle cx="950" cy="170" r="12" fill="#22C55E"/>
+  <circle cx="950" cy="170" r="28" stroke="#22C55E" stroke-opacity="0.45"/>
+</svg>

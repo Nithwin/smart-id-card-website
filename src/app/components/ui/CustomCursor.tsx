@@ -104,7 +104,7 @@ export function CustomCursor() {
           : "transparent";
         ringRef.current.style.borderColor = hasLabel
           ? "transparent"
-          : "color-mix(in srgb, var(--text-primary) 80%, transparent)";
+          : "color-mix(in srgb, var(--accent-2) 78%, transparent)";
       }
 
       raf = requestAnimationFrame(loop);
@@ -133,7 +133,7 @@ export function CustomCursor() {
         ref={dotRef}
         className="pointer-events-none fixed left-0 top-0 z-[9999] h-[6px] w-[6px] rounded-full"
         style={{
-          background: "var(--text-primary)",
+          background: "var(--accent-2)",
           opacity:    0,
           mixBlendMode: "difference",
           willChange: "transform",
@@ -149,7 +149,7 @@ export function CustomCursor() {
           width:        BASE,
           height:       BASE,
           border:       "1.5px solid",
-          borderColor:  "color-mix(in srgb, var(--text-primary) 80%, transparent)",
+          borderColor:  "color-mix(in srgb, var(--accent-2) 78%, transparent)",
           opacity:      0,
           willChange:   "transform, opacity, background-color",
           transition:   "opacity 200ms ease, background-color 200ms ease, border-color 200ms ease",

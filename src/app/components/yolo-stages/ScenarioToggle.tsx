@@ -20,9 +20,9 @@ export function ScenarioToggle({ scenario, onChange }: Props) {
         data-cursor="hover"
         className="flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] transition-all"
         style={{
-          background: isDetected ? "color-mix(in srgb, #10b981 18%, transparent)" : "transparent",
-          color:      isDetected ? "#10b981" : "var(--text-muted)",
-          border:     isDetected ? "1px solid color-mix(in srgb, #10b981 50%, transparent)" : "1px solid transparent",
+          background: isDetected ? "color-mix(in srgb, var(--ca-neutral) 18%, transparent)" : "transparent",
+          color:      isDetected ? "var(--ca-neutral)" : "var(--text-muted)",
+          border:     isDetected ? "1px solid color-mix(in srgb, var(--ca-neutral) 50%, transparent)" : "1px solid transparent",
         }}
       >
         <ShieldCheck className="h-3.5 w-3.5" /> With ID
@@ -33,9 +33,9 @@ export function ScenarioToggle({ scenario, onChange }: Props) {
         data-cursor="hover"
         className="flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] transition-all"
         style={{
-          background: !isDetected ? "color-mix(in srgb, #ef4444 18%, transparent)" : "transparent",
-          color:      !isDetected ? "#ef4444" : "var(--text-muted)",
-          border:     !isDetected ? "1px solid color-mix(in srgb, #ef4444 50%, transparent)" : "1px solid transparent",
+          background: !isDetected ? "color-mix(in srgb, var(--ca-alert) 18%, transparent)" : "transparent",
+          color:      !isDetected ? "var(--ca-alert)" : "var(--text-muted)",
+          border:     !isDetected ? "1px solid color-mix(in srgb, var(--ca-alert) 50%, transparent)" : "1px solid transparent",
         }}
       >
         <ShieldX className="h-3.5 w-3.5" /> No ID

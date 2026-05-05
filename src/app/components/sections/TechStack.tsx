@@ -16,7 +16,7 @@ export function TechStack() {
   const inView = useInView(ref, { amount: 0.2 });
 
   return (
-    <section className="mx-auto max-w-[1600px] px-5 py-28 sm:px-8">
+    <section id="stack" className="mx-auto max-w-[1600px] px-5 py-28 sm:px-8">
       <SectionLabel number="06" label="Stack" className="mb-12" />
 
       <div className="grid gap-10 md:grid-cols-12">

@@ -1,0 +1,20 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#090A0D"/>
+  <rect x="120" y="120" width="960" height="560" rx="18" fill="#0F172A" stroke="#283548"/>
+  <g opacity="0.18">
+    <path d="M120 200H1080M120 280H1080M120 360H1080M120 440H1080M120 520H1080M120 600H1080" stroke="#94A3B8"/>
+    <path d="M220 120V680M320 120V680M420 120V680M520 120V680M620 120V680M720 120V680M820 120V680M920 120V680" stroke="#94A3B8"/>
+  </g>
+  <g>
+    <rect x="360" y="220" width="470" height="280" rx="14" stroke="#38BDF8" stroke-width="2"/>
+    <rect x="430" y="270" width="180" height="170" rx="10" stroke="#A78BFA" stroke-width="2" stroke-dasharray="6 6"/>
+    <rect x="635" y="250" width="140" height="120" rx="8" stroke="#F59E0B" stroke-width="2"/>
+  </g>
+  <g>
+    <circle cx="520" cy="355" r="120" fill="#6366F1" fill-opacity="0.16"/>
+    <circle cx="720" cy="320" r="90" fill="#F59E0B" fill-opacity="0.16"/>
+    <circle cx="670" cy="430" r="130" fill="#10B981" fill-opacity="0.14"/>
+  </g>
+  <path d="M305 355H910" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3 6"/>
+  <path d="M607 160V640" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3 6"/>
+</svg>

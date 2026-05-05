@@ -7,23 +7,9 @@ import { VerdictBanner } from "./stage10/VerdictBanner";
 interface Props { scenario: "detected" | "not_detected" }
 
 export function Stage10_FinalOutput({ scenario }: Props) {
-  const detected = scenario === "detected";
-
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-6 p-4 md:p-8 overflow-hidden">
-      <div className="text-center space-y-2 z-10 w-full mb-2">
-        <h2 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">
-          Stage 10: Final Detection Output
-        </h2>
-        <p className="text-slate-500 text-xs max-w-2xl mx-auto">
-          NMS resolves overlapping boxes — then campus logic: ID visible on the student, or no-ID violation (capture → InsightFace → staff).
-        </p>
-      </div>
-
-      <div className="relative w-full max-w-5xl h-[280px] bg-slate-900 border border-green-500/20 rounded-xl overflow-hidden shadow-[inset_0_0_80px_rgba(34,197,94,0.04)] flex flex-col items-center justify-center">
-        
-        {/* Background grid */}
-        <div className="absolute inset-0 opacity-15 bg-[linear-gradient(rgba(34,197,94,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.06)_1px,transparent_1px)] bg-[size:40px_40px]" />
+      <div className="yolo-stage-card relative flex w-full max-w-5xl h-[240px] flex-col items-center justify-center overflow-hidden sm:h-[280px]">
 
         <FinalImageRender scenario={scenario} />
         <VerdictBanner scenario={scenario} />
@@ -34,10 +20,11 @@ export function Stage10_FinalOutput({ scenario }: Props) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="glass-panel p-4 rounded-xl border border-green-500/20 text-xs text-slate-300 w-full max-w-4xl text-center leading-relaxed"
+        className="glass-panel w-full max-w-4xl rounded-xl border p-4 text-center text-xs leading-relaxed text-slate-300"
+        style={{ borderColor: "var(--border)" }}
       >
-        <strong className="text-green-400 font-bold mx-auto block mb-1">Non-Maximum Suppression (NMS) &amp; Final Rendering</strong>
-        The raw network outputs thousands of bounding box predictions. <strong>NMS</strong> keeps the strongest non-overlapping person and card boxes. Downstream rules ask: is a card visible on this student? If not, that <strong className={detected ? "text-green-300" : "text-red-300"}>{detected ? "ID OK" : "NO-ID"}</strong> signal triggers frame capture, InsightFace gallery match, and the HOD / Principal packet — outside this visualiser, but driven by this output.
+        <strong className="mx-auto mb-1 block font-bold text-[color:var(--ca-neutral)]">Watch for:</strong>
+        NMS keeps the strongest boxes, then rule logic routes either ID-OK or no-ID incident handling.
       </motion.div>
     </div>
   );

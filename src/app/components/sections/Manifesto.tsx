@@ -10,7 +10,7 @@ import { easeOutExpo }    from "@/app/lib/motion";
 
 export function Manifesto() {
   return (
-    <section className="relative mx-auto max-w-[1600px] overflow-hidden px-5 py-32 sm:px-8 sm:py-44">
+    <section id="manifesto" className="relative mx-auto max-w-[1600px] overflow-hidden px-5 py-32 sm:px-8 sm:py-44">
       <SectionLabel number="00" label="Manifesto" className="mb-16" />
 
       {/* Decorative parallax accent number */}

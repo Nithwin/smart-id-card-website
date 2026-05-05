@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 import { Navbar }         from "@/app/components/Navbar";
 import { Footer }         from "@/app/components/Footer";
@@ -19,6 +18,7 @@ import { Modules }        from "@/app/components/sections/Modules";
 import { CaYoloPipeline } from "@/app/components/sections/CaYoloPipeline";
 import { Architecture }   from "@/app/components/sections/Architecture";
 import { Metrics }        from "@/app/components/sections/Metrics";
+import { BenchmarksReferences } from "@/app/components/sections/BenchmarksReferences";
 import { TechStack }      from "@/app/components/sections/TechStack";
 import { Team }           from "@/app/components/sections/Team";
 import { Timeline }       from "@/app/components/sections/Timeline";
@@ -37,24 +37,12 @@ export default function Home() {
   }, [dark]);
 
   useEffect(() => {
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  }, []);
+
+  useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
-    /* ── Lenis smooth scroll ───────────────────────────────────────
-     * Momentum-based scroll with spring ease. Synced with GSAP
-     * ScrollTrigger so the reading-progress bar and all scrub-based
-     * animations keep working without any extra plumbing.
-     * ─────────────────────────────────────────────────────────────── */
-    const lenis = new Lenis({
-      duration:   1.15,
-      easing:     (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
-
-    /* Lenis fires a real scroll event on window, so Framer Motion's
-     * useScroll hooks keep working. Only GSAP needs an explicit sync. */
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time: number) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
 
     if (progressRef.current) {
       gsap.fromTo(
@@ -75,8 +63,6 @@ export default function Home() {
     }
 
     return () => {
-      lenis.destroy();
-      gsap.ticker.remove((time: number) => lenis.raf(time * 1000));
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
@@ -149,6 +135,8 @@ export default function Home() {
         <Architecture />
 
         <Metrics />
+
+        <BenchmarksReferences />
 
         <TechStack />
 

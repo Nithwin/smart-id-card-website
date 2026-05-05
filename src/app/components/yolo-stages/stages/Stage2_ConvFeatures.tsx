@@ -85,12 +85,6 @@ export function Stage2_ConvFeatures({ scenario }: Props) {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center gap-6 p-4 md:p-6 overflow-hidden [perspective:1200px]">
-      <div className="text-center space-y-2 z-10 w-full">
-        <h2 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
-          Stage 2: Live Convolutional Extraction
-        </h2>
-      </div>
-
       <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20 w-full max-w-6xl mt-4">
         
         {/* === LEFT: Flat Input Image === */}
@@ -189,7 +183,7 @@ export function Stage2_ConvFeatures({ scenario }: Props) {
         </div>
 
         {/* === RIGHT: 3D Isometric Output Feature Maps === */}
-        <div className="flex flex-col items-center gap-6">
+        <div className="hidden lg:flex flex-col items-center gap-6">
           <span className="text-[11px] font-mono text-violet-300 font-bold bg-violet-900/40 px-3 py-1 rounded border border-violet-500/50">
             3D Feature Volume
           </span>
@@ -271,10 +265,31 @@ export function Stage2_ConvFeatures({ scenario }: Props) {
           </div>
         </div>
 
+        {/* Mobile/Tablet simplified output map */}
+        <div className="w-full max-w-[280px] rounded-lg border border-slate-600 bg-slate-900/70 p-3 lg:hidden">
+          <p className="mb-2 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-slate-300">
+            Feature map summary
+          </p>
+          <div className="grid grid-cols-8 gap-0.5">
+            {outputGrid.map((val, idx) => {
+              const color =
+                val === 4
+                  ? "bg-[color:var(--ca-mark)]"
+                  : val === 1 || val === 2
+                    ? "bg-[color:var(--ca-neutral)]"
+                    : val === 3
+                      ? "bg-violet-400/80"
+                      : "bg-slate-600/70";
+              return <div key={`mobile-cell-${idx}`} className={`h-3 w-3 rounded-[2px] ${color}`} />;
+            })}
+          </div>
+        </div>
+
       </div>
 
-      <div className="glass-panel p-4 mt-6 rounded-xl border border-indigo-500/20 text-xs text-slate-300 w-full max-w-4xl text-center leading-relaxed">
-        <strong className="text-violet-400">Deep Extraction</strong>: Convolution doesn&apos;t just create one flat image. It stacks multiple filters (Edge filters, Corner filters, Texture filters) yielding a <strong>3D Volume of Features</strong>. {hasCard ? <span className="text-amber-400 font-bold">Watch the ID Card trigger massive spikes on the top filter layer!</span> : ""}
+      <div className="glass-panel mt-4 w-full max-w-4xl rounded-xl border p-4 text-center text-xs leading-relaxed text-slate-300" style={{ borderColor: "var(--border)" }}>
+        <strong className="text-[color:var(--ca-neutral)]">Watch for:</strong>{" "}
+        Convolution converts one image into multiple feature maps; card regions produce stronger activations.
       </div>
     </div>
   );

@@ -23,39 +23,56 @@ import { Stage10_FinalOutput }       from "@/app/components/yolo-stages/stages/S
 /* ─── Constants ─────────────────────────────────────────── */
 const TOTAL_STAGES = 10;
 /** Tuned for readability on mobile + desktop */
-const STAGE_DURATION_MS = 6400;
+const STAGE_DURATION_MS = 9000;
+const CA_STAGES = new Set([4, 5, 7]);
 
 const STAGE_TITLES = [
-  "Input Preprocessing",
-  "Convolutional Features",
-  "C2f Bottleneck",
-  "SPPF Pooling",
-  "CBAM Attention ★",
-  "Coordinate Attention ★",
-  "Neck PANet Fusion",
-  "P2 Micro-Head ★",
-  "Decoupled Head",
-  "Final Output",
+  "Input preprocessing",
+  "Convolutional features",
+  "C2f bottleneck",
+  "SPPF pooling",
+  "CBAM attention",
+  "Coordinate attention",
+  "PANet neck fusion",
+  "P2 micro-head",
+  "Decoupled head",
+  "Final output",
 ];
 
 const STAGE_BLURBS = [
-  "Resize · Normalise · RGB Split",
-  "Sliding kernels extracting edges & textures",
-  "Split / merge feature paths",
-  "Three pooling stages → wider receptive field",
-  "Channel attention × Spatial attention",
-  "Directional 1D pooling — H × W",
-  "Bidirectional feature fusion",
-  "Stride-4 head for tiny ID cards",
-  "Separate classification + regression branches",
-  "NMS → ID visible vs no-ID violation (then InsightFace + staff alert)",
+  "Every frame is resized to 640x640 and split into R, G, B channels.",
+  "3x3 filters slide across the frame to find edges, corners, and textures.",
+  "Half the features skip deep layers so fine detail is not lost.",
+  "Pooling grows context from 5x5 to 13x13 for multi-scale understanding.",
+  "Channel attention selects what matters, spatial attention selects where.",
+  "Directional pooling tracks horizontal and vertical card position precisely.",
+  "Top-down semantics and bottom-up detail are fused in both directions.",
+  "Stride-4 detection keeps tiny ID cards visible in dense scenes.",
+  "Classification and box regression split into independent expert branches.",
+  "NMS keeps best boxes, then rules route ID-OK or no-ID workflow.",
+];
+
+const STAGE_SIMPLE_EXPLANATIONS = [
+  "We standardize each camera frame so the model gets clean, consistent input.",
+  "The model scans the image and starts learning basic patterns like edges and shapes.",
+  "Some features are preserved directly while others go deeper, then both are merged.",
+  "The model checks both nearby detail and wider context at the same time.",
+  "This layer learns what features matter most and where to focus.",
+  "It improves position accuracy by learning horizontal and vertical cues separately.",
+  "It combines detail and context from different scales before final detection.",
+  "This extra head helps detect very small ID cards that are easy to miss.",
+  "One branch predicts class type, the other branch predicts box location.",
+  "The model keeps the best boxes and sends the final decision for routing.",
 ];
 
 /* ─── Component ─────────────────────────────────────────── */
 export function CaYoloPipeline() {
   const [currentStage, setCurrentStage] = useState(0);
   const [scenario, setScenario]         = useState<"detected" | "not_detected">("detected");
-  const [isPlaying, setIsPlaying]       = useState(true);
+  const [isPlaying, setIsPlaying]       = useState(() => {
+    if (typeof window === "undefined") return true;
+    return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
   const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleScenarioChange = useCallback((s: "detected" | "not_detected") => {
@@ -120,7 +137,7 @@ export function CaYoloPipeline() {
       </div>
 
       {/* Pipeline shell — theme-aware */}
-      <div className="yolo-shell award-surface flex flex-col items-center gap-3 rounded-3xl p-2.5 sm:gap-4 sm:p-4 md:p-5">
+      <div className="yolo-shell flex flex-col items-center gap-2 rounded-3xl p-2.5 sm:gap-4 sm:p-4 md:p-5">
         {/* Controls row — only scenario toggle now */}
         <div className="flex w-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
           <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-start">
@@ -154,6 +171,18 @@ export function CaYoloPipeline() {
           >
             stage {currentStage + 1} / {TOTAL_STAGES}
           </span>
+          {CA_STAGES.has(currentStage) && (
+            <span
+              className="mt-1 inline-flex rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.2em]"
+              style={{
+                color: "var(--ca-mark)",
+                border: "1px solid color-mix(in srgb, var(--ca-mark) 55%, transparent)",
+                background: "color-mix(in srgb, var(--ca-mark) 14%, transparent)",
+              }}
+            >
+              ★ CA-YOLOv8 addition
+            </span>
+          )}
           <h3
             className="mt-1 text-center text-[1.35rem] font-medium tracking-tight sm:text-3xl"
             style={{ color: "var(--text-primary)" }}
@@ -166,10 +195,23 @@ export function CaYoloPipeline() {
           >
             {STAGE_BLURBS[currentStage]}
           </p>
+          <p
+            className="mx-auto mt-3 max-w-[64ch] rounded-xl px-3 py-2 text-center text-[0.8rem] sm:text-[0.86rem]"
+            style={{
+              color: "var(--text-body)",
+              background: "color-mix(in srgb, var(--bg-subtle) 82%, transparent)",
+              border: "1px solid var(--border)",
+            }}
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em]" style={{ color: "var(--text-muted)" }}>
+              Simple explanation:
+            </span>{" "}
+            {STAGE_SIMPLE_EXPLANATIONS[currentStage]}
+          </p>
         </motion.div>
 
         {/* Main visualization panel — theme-aware canvas */}
-        <div className="yolo-canvas relative flex min-h-[340px] w-full flex-col sm:min-h-[460px] md:min-h-[500px]">
+        <div className="yolo-canvas relative flex min-h-[300px] w-full flex-col sm:min-h-[420px] md:min-h-[500px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStage}

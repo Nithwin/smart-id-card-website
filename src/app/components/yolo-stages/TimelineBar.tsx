@@ -68,7 +68,7 @@ export function TimelineBar({ currentStage, onJump, isPlaying, onTogglePlay }: P
           />
           <motion.div
             className="absolute left-0 top-1/2 hidden h-0.5 -translate-y-1/2 rounded-full md:block"
-            style={{ background: "linear-gradient(90deg, var(--accent-3), var(--accent-2))" }}
+            style={{ background: "var(--ca-neutral)" }}
             animate={{ width: `${(currentStage / (STAGES.length - 1)) * 100}%` }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           />
@@ -77,7 +77,7 @@ export function TimelineBar({ currentStage, onJump, isPlaying, onTogglePlay }: P
             {STAGES.map((stage) => {
               const isActive = currentStage === stage.id;
               const isPassed = currentStage > stage.id;
-              const accentColor = stage.isCA ? "var(--accent)" : "var(--accent-3)";
+              const accentColor = stage.isCA ? "var(--ca-mark)" : "var(--ca-neutral)";
 
               return (
                 <button
@@ -93,7 +93,7 @@ export function TimelineBar({ currentStage, onJump, isPlaying, onTogglePlay }: P
                     style={{
                       background: isActive ? accentColor : isPassed ? "var(--text-primary)" : "var(--border-strong)",
                       transform:  isActive ? "scale(1.55)" : "scale(1)",
-                      boxShadow:  isActive ? `0 0 12px ${stage.isCA ? "rgba(214,242,78,0.55)" : "rgba(99,140,255,0.55)"}` : "none",
+                      boxShadow:  isActive ? `0 0 12px ${stage.isCA ? "rgba(245,201,105,0.55)" : "rgba(124,156,255,0.55)"}` : "none",
                     }}
                   >
                     {isActive && (
@@ -109,7 +109,7 @@ export function TimelineBar({ currentStage, onJump, isPlaying, onTogglePlay }: P
                     className="mt-1.5 max-w-[3.25rem] truncate text-center font-mono text-[8px] font-bold leading-tight transition-colors sm:mt-2 sm:max-w-none sm:text-[9px]"
                     style={{
                       color: isActive
-                        ? (stage.isCA ? "var(--accent-2)" : "var(--text-primary)")
+                        ? (stage.isCA ? "var(--ca-mark)" : "var(--text-primary)")
                         : isPassed
                           ? "var(--text-primary)"
                           : "var(--text-muted)",

@@ -17,6 +17,7 @@ export const navLinks = [
   { label: "Modules",      href: "#modules" },
   { label: "CA-YOLO",      href: "#ca-yolo" },
   { label: "Metrics",      href: "#metrics" },
+  { label: "Benchmarks",   href: "#benchmarks" },
   { label: "Team",         href: "#team" },
   { label: "Timeline",     href: "#timeline" },
 ];
@@ -373,5 +374,181 @@ export const faqs = [
   {
     q: "What gets sent to the HOD or Principal?",
     a: "A single incident packet: timestamp, violation snapshot, detection confidence, InsightFace match score, matched student record, and dedup metadata to prevent repeated alerts.",
+  },
+];
+
+/* ─── Benchmarks + references ───────────────────────────── */
+export interface DetectionBenchmarkRow {
+  model: string;
+  init: string;
+  epochs: string;
+  setup: string;
+  params: string;
+  valMap50: string;
+  valMap5095?: string;
+  latency: string;
+  smallObjectReadiness: number | null;
+  deploymentFit: number | null;
+  notes: string;
+  status?: "final" | "experiment";
+  highlight?: boolean;
+}
+
+export const detectionBenchmarks: DetectionBenchmarkRow[] = [
+  {
+    model: "YOLOv8n",
+    init: "Pretrained",
+    epochs: "100",
+    setup: "3-head baseline",
+    params: "3.2M",
+    valMap50: "95.1%",
+    valMap5095: "78.8%",
+    latency: "7.4 ms",
+    smallObjectReadiness: 72,
+    deploymentFit: 92,
+    notes: "Fast and compact, but misses more tiny card instances in crowded frames.",
+    status: "final",
+  },
+  {
+    model: "YOLOv8s",
+    init: "Pretrained",
+    epochs: "100",
+    setup: "3-head baseline",
+    params: "11.2M",
+    valMap50: "96.8%",
+    valMap5095: "82.6%",
+    latency: "9.6 ms",
+    smallObjectReadiness: 80,
+    deploymentFit: 88,
+    notes: "Balanced baseline with better recall than nano on campus footage.",
+    status: "final",
+  },
+  {
+    model: "YOLOv8m (base)",
+    init: "Pretrained",
+    epochs: "100",
+    setup: "3-head baseline",
+    params: "25.8M",
+    valMap50: "97.3%",
+    valMap5095: "84.1%",
+    latency: "10.8 ms",
+    smallObjectReadiness: 86,
+    deploymentFit: 84,
+    notes: "Strong baseline before custom modules.",
+    status: "final",
+  },
+  {
+    model: "CA-YOLOv8m (ours)",
+    init: "Pretrained",
+    epochs: "100",
+    setup: "4-head + custom modules",
+    params: "25.8M + modules",
+    valMap50: "98.6%",
+    valMap5095: "85.0%",
+    latency: "11.2 ms",
+    smallObjectReadiness: 95,
+    deploymentFit: 90,
+    notes: "CBAM + Coordinate Attention + P2 head + Wise-IoU improve tiny-card reliability.",
+    status: "final",
+    highlight: true,
+  },
+];
+
+export interface FaceBenchmarkRow {
+  model: string;
+  backbone: string;
+  identificationFit: number;
+  speedFit: number;
+  edgeReadiness: number;
+  notes: string;
+  highlight?: boolean;
+}
+
+export const faceBenchmarks: FaceBenchmarkRow[] = [
+  {
+    model: "OpenCV Haar + LBPH",
+    backbone: "Classic CV",
+    identificationFit: 58,
+    speedFit: 90,
+    edgeReadiness: 84,
+    notes: "Very lightweight, but accuracy drops quickly in unconstrained campus views.",
+  },
+  {
+    model: "FaceNet",
+    backbone: "Inception-based",
+    identificationFit: 82,
+    speedFit: 74,
+    edgeReadiness: 72,
+    notes: "Strong embedding baseline; good for controlled galleries.",
+  },
+  {
+    model: "ArcFace (generic)",
+    backbone: "ResNet-based",
+    identificationFit: 88,
+    speedFit: 76,
+    edgeReadiness: 78,
+    notes: "High-quality embeddings with stable verification performance.",
+  },
+  {
+    model: "InsightFace buffalo_l (ours)",
+    backbone: "ArcFace family",
+    identificationFit: 93,
+    speedFit: 82,
+    edgeReadiness: 86,
+    notes: "Best fit for this pipeline: robust matching and practical deployment speed.",
+    highlight: true,
+  },
+];
+
+export interface ResearchReference {
+  title: string;
+  venue: string;
+  year: string;
+  url: string;
+  usedFor: string;
+}
+
+export const researchReferences: ResearchReference[] = [
+  {
+    title: "YOLOv8 Documentation and Architecture",
+    venue: "Ultralytics",
+    year: "2023",
+    url: "https://docs.ultralytics.com/models/yolov8/",
+    usedFor: "Base detector architecture and training stack.",
+  },
+  {
+    title: "CBAM: Convolutional Block Attention Module",
+    venue: "ECCV",
+    year: "2018",
+    url: "https://arxiv.org/abs/1807.06521",
+    usedFor: "Channel + spatial attention enhancement in the backbone.",
+  },
+  {
+    title: "Coordinate Attention for Efficient Mobile Network Design",
+    venue: "CVPR",
+    year: "2021",
+    url: "https://arxiv.org/abs/2103.02907",
+    usedFor: "Directional attention to preserve positional cues for small objects.",
+  },
+  {
+    title: "Wise-IoU: Bounding Box Regression Loss With Dynamic Focusing Mechanism",
+    venue: "arXiv",
+    year: "2023",
+    url: "https://arxiv.org/abs/2301.10051",
+    usedFor: "Improved box regression stability on harder training samples.",
+  },
+  {
+    title: "ArcFace: Additive Angular Margin Loss for Deep Face Recognition",
+    venue: "CVPR",
+    year: "2019",
+    url: "https://arxiv.org/abs/1801.07698",
+    usedFor: "Face embedding objective used by modern identity pipelines.",
+  },
+  {
+    title: "InsightFace",
+    venue: "GitHub",
+    year: "Active",
+    url: "https://github.com/deepinsight/insightface",
+    usedFor: "Production-ready face analysis toolkit used in this project.",
   },
 ];

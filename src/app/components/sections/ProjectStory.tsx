@@ -61,7 +61,7 @@ export function ProjectStory() {
   return (
     <section
       ref={wrapRef}
-      id="chapters"
+      id="story"
       className="relative overflow-hidden bg-[var(--bg-subtle)]"
       style={{ borderBlock: "1px solid var(--border)" }}
     >

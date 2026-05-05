@@ -14,7 +14,7 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="mx-auto max-w-[1600px] px-5 py-28 sm:px-8">
+    <section id="faq" className="mx-auto max-w-[1600px] px-5 py-28 sm:px-8">
       <SectionLabel number="10" label="FAQ" className="mb-12" />
 
       <div className="grid gap-12 md:grid-cols-12">
